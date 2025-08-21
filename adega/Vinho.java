@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 enum TipoVinho {
   BRANCO,
@@ -52,8 +53,9 @@ class Vinho {
     return this.dataDeProducao;
   }
 
-  public LocalDate getDataDeProducaoInDias() {
-    return this.dataDeProducao.day;
+  public Long getDataDeProducaoInDias() {
+    final LocalDate now = LocalDate.now();
+    return this.dataDeProducao.until(now,  ChronoUnit.DAYS);
   }
 
   public void setDataDeProducao(LocalDate dataDeProducao) {

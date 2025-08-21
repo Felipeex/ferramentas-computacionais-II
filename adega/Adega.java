@@ -8,7 +8,7 @@ class Adega {
   }
 
   boolean isExiste(int linha, int coluna) {
-    return adega[linha][coluna] != null;
+    return this.isExiste(adega[linha][coluna]);
   }
 
   boolean isExiste(Vinho vinho) {
@@ -27,6 +27,34 @@ class Adega {
     if (!this.isExiste(linha, coluna)) {
       adega[linha][coluna] = vinho;
     }
+  }
+
+  public void remover(int linha, int coluna) {
+    if (linha < 0 || coluna < 0) {
+      throw new Error("Esse posição não existe na adega.");
+    }
+
+    if (linha >= ADEGA_LINHAS || coluna >= ADEGA_COLUNAS) {
+      throw new Error("Esse posição não existe na adega.");
+    }
+
+    if (this.isExiste(linha, coluna)) {
+      adega[linha][coluna] = null;
+    }
+  }
+
+  public int contarVinhos() {
+    int contador = 0;
+
+    for (int linha = 0; linha < ADEGA_LINHAS; linha++) {
+      for (Vinho vinho: adega[linha]) {
+        if (this.isExiste(vinho)) {
+          contador++;
+        }
+      }
+    }
+
+    return contador;
   }
 
   private int contarVinhoPorTipo(TipoVinho tipo) {
@@ -52,7 +80,25 @@ class Adega {
   }
 
   public Vinho vinhoMaisAntigo() {
-    
+    Vinho vinhoMaisAntigo = null;
+
+    for (int linha = 0; linha < ADEGA_LINHAS; linha++) {
+      for (Vinho vinho: adega[linha]) {
+        if (this.isExiste(vinho)) {
+          long vinhoMaisAntigoInDias = 0;
+
+          if (vinhoMaisAntigo != null) {
+            vinhoMaisAntigoInDias = vinhoMaisAntigo.getDataDeProducaoInDias();
+          }
+          
+          if (vinho.getDataDeProducaoInDias() > vinhoMaisAntigoInDias) {
+            vinhoMaisAntigo = vinho;
+          }
+        }
+      }
+    }
+
+    return vinhoMaisAntigo;
   }
 
   public void visualizar() {
